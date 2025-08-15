@@ -45,6 +45,9 @@ def list_tasks(status="all", page=1, page_size=10):
       limit_page_length=page_size,
    )
 
+   if len(tasks)==0:
+      return api_response(status=404, message="No tasks found")
+
    total_data = frappe.db.count("Tasks", filters=filters)
 
    return api_response(
