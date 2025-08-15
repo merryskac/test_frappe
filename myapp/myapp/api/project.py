@@ -23,7 +23,7 @@ def list_tasks(status="all", page=1, page_size=10):
    try:
       page = int(page)
       page_size = int(page_size)
-   except e:
+   except ValueError:
       return api_response(status=400, message="Invalid page or page size: should be integers")
    
    user_id = "Administrator"
@@ -37,7 +37,7 @@ def list_tasks(status="all", page=1, page_size=10):
    if status != "all":
       filters["status"]= status
    
-   projects = frappe.get_all(
+   tasks = frappe.get_all(
       "Tasks", 
       filters=filters, 
       fields=["name as id", "name1 as name", "status"],
@@ -51,7 +51,7 @@ def list_tasks(status="all", page=1, page_size=10):
       status=200,
       message="Data found",
       data={
-         "data": projects,
+         "data": tasks,
          "total_data": total_data,
          "page": page,
          "per_page": page_size,
